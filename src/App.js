@@ -6,10 +6,28 @@ import './App.css';
 class App extends React.Component {
   state = {
     items: [
-      { text: 'eat', id: 1, completed: false, category: 'lifestyle' },
-      { text: 'sleep', id: 2, completed: false, category: 'rest' },
-      { text: 'react', id: 3, completed: false, category: 'code' },
-      { text: 'node', id: 4, completed: false, category: 'code' }
+      {
+        text: 'eat',
+        id: 1,
+        completed: false,
+        category: 'lifestyle',
+        hidden: false
+      },
+      {
+        text: 'sleep',
+        id: 2,
+        completed: false,
+        category: 'rest',
+        hidden: false
+      },
+      {
+        text: 'react',
+        id: 3,
+        completed: false,
+        category: 'code',
+        hidden: false
+      },
+      { text: 'node', id: 4, completed: false, category: 'code', hidden: false }
     ]
   };
 
@@ -22,13 +40,14 @@ class App extends React.Component {
           removeItem={this.removeItem}
           toggleComplete={this.toggleComplete}
           displayCategory={this.displayCategory}
+          displayAll={this.displayAll}
         />
       </div>
     );
   }
 
   toggleComplete = itemToToggle => {
-    console.log('toggle this>', itemToToggle);
+    console.log('toggle this', itemToToggle);
     this.setState(state => {
       return {
         items: state.items.map(item => {
@@ -52,10 +71,26 @@ class App extends React.Component {
   };
 
   displayCategory = category => {
-    console.log('displaying category ', category);
+    console.log('displaying category', category);
     this.setState(state => {
       return {
-        items: state.items.filter(item => item.category === category)
+        items: state.items.map(item => {
+          if (item.category !== category) item.hidden = true;
+          else item.hidden = false;
+          return item;
+        })
+      };
+    });
+  };
+
+  displayAll = () => {
+    console.log('displaying all ');
+    this.setState(state => {
+      return {
+        items: state.items.map(item => {
+          item.hidden = false;
+          return item;
+        })
       };
     });
   };
